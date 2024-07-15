@@ -1,0 +1,46 @@
+Step 1
+[oracle@server1 backup]$ cat backup.rman
+#!/bin/sh
+
+export ORACLE_SID=orcl
+
+ORACLE_HOME=/u01/app/oracle/product/11.2.0/dbhome_1; export ORACLE_HOME
+
+PATH=:/usr/bin$PATH:$HOME/bin:/u01/app/oracle/product/11.2.0/dbhome_1/bin:/usr/bin; export PATH
+
+/u01/app/oracle/product/11.2.0/dbhome_1/bin/rman target / <<EOF
+run{
+allocate channel c1 device type disk;
+allocate channel c2 device type disk;
+allocate channel c3 device type disk;
+
+sql'alter system switch logfile';
+sql'alter system switch logfile';
+sql'alter system switch logfile';
+sql'alter system checkpoint';
+ 
+backup incremental level 0 database tag 'ORCL_FULL_BKP' format '/u01/app/oracle/backup/backup_db-%T-I-%d-%s.bkp';
+backup current controlfile  tag 'ORCL_FULL_CTF' format '/u01/app/oracle/backup/ctf_full-%T-I-%d-%s.bkp';
+backup archivelog all delete all input tag 'ORCL_FULL_ARC' format '/u01/app/oracle/backup/arc_full-%T-I-%d-%s.bkp';
+}
+exit
+EOF
+
+
+step 2.
+
+[oracle@server1 backup]$ crontab -l
+# For details see
+
+# Example of job definition:
+# .---------------- minute (0 - 59)
+# |  .------------- hour (0 - 23)
+# |  |  .---------- day of month (1 - 31)
+# |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...
+# |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
+# |  |  |  |  |
+# *  *  *  *  * user-name  command to be executed
+
+
+
+35 15 * * * /u01/app/oracle/backup/backup.rman > /u01/app/oracle/backup/script_output.log
