@@ -18,7 +18,7 @@ Table of Contents:
   
 Key Features
 
-* Multitenant Architecture
+* Multitenant Architecture 19c
 * Advanced Analytics
 * High Availability
 * Security Features
