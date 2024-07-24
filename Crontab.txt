@@ -1,4 +1,5 @@
-Step 1
+Step 1.
+
 [oracle@server1 backup]$ cat backup.rman
 #!/bin/sh
 
@@ -40,7 +41,6 @@ step 2.
 # |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat
 # |  |  |  |  |
 # *  *  *  *  * user-name  command to be executed
-
 
 
 35 15 * * * /u01/app/oracle/backup/backup.rman > /u01/app/oracle/backup/script_output.log
